@@ -8,6 +8,7 @@ Editor.App.extend({
       'package-search-path': [
         'app://packages/',
       ],
+      'selection': [ 'normal' ],
     });
 
     cb ();
