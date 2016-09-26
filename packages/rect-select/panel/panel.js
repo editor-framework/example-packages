@@ -52,49 +52,7 @@ Editor.Panel.extend({
 
   listeners: {
     'panel-resize' () {
-      const list = [
-        'extrajudicially',
-        'duse',
-        'appleton',
-        'aborning',
-        'evacuee',
-        'impecunious',
-        'overrude',
-        'subrange',
-        'hamlet',
-        'subtranslucency',
-      ];
-
-      let rect = this.$svg.getBoundingClientRect();
-      let index = 0;
-      this._scene.clear();
-
-      list.forEach(name => {
-        let x = Editor.Math.randomRange(100, rect.width - 100);
-        let y = Editor.Math.randomRange(100, rect.height - 100);
-        let node = this._scene.group();
-        let rectNode = node.rect(15, 15)
-          .move(-5, 0)
-          .translate(x, y)
-          .addClass('node')
-        ;
-        rectNode.selectable = true;
-        rectNode.index = index;
-
-        node
-          .plain(name)
-          .font({
-            size: 15,
-            anchor: 'middle',
-          })
-          .fill({
-            color: '#999'
-          })
-          .translate(x, y - 5);
-
-        this._rectNodes.push(rectNode);
-        ++index;
-      });
+      this._refreshNodes();
     },
   },
 
@@ -123,6 +81,8 @@ Editor.Panel.extend({
         this._rectNodes[id].addClass('selected');
       });
     });
+
+    this._refreshNodes();
   },
 
   updateSelectRect (x, y, w, h) {
@@ -168,6 +128,53 @@ Editor.Panel.extend({
     }
 
     return results;
+  },
+
+  _refreshNodes () {
+    const list = [
+      'extrajudicially',
+      'duse',
+      'appleton',
+      'aborning',
+      'evacuee',
+      'impecunious',
+      'overrude',
+      'subrange',
+      'hamlet',
+      'subtranslucency',
+    ];
+
+    let rect = this.$svg.getBoundingClientRect();
+    let index = 0;
+    this._scene.clear();
+    this._rectNodes = [];
+
+    list.forEach(name => {
+      let x = Editor.Math.randomRange(100, rect.width - 100);
+      let y = Editor.Math.randomRange(100, rect.height - 100);
+      let node = this._scene.group();
+      let rectNode = node.rect(15, 15)
+        .move(-5, 0)
+        .translate(x, y)
+        .addClass('node')
+      ;
+      rectNode.selectable = true;
+      rectNode.index = index;
+
+      node
+        .plain(name)
+        .font({
+          size: 15,
+          anchor: 'middle',
+        })
+        .fill({
+          color: '#999'
+        })
+        .translate(x, y - 5);
+
+      this._rectNodes.push(rectNode);
+      ++index;
+    });
   },
 
   _onMousedown (event) {
